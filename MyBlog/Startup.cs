@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyBlog.Models;
 
 namespace MyBlog
 {
@@ -41,6 +42,9 @@ namespace MyBlog
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddDbContext<MyBlogContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("MyBlogContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +71,7 @@ namespace MyBlog
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=BlogPosts}/{action=Index}/{id?}");
             });
         }
     }
